@@ -4,8 +4,12 @@ import { useConvexAuth } from "convex/react";
 
 import { ArrowRight } from "lucide-react";
 
+import { SignInButton } from "@clerk/clerk-react";
+
 import { Button } from "../ui/button";
 import { Spinner } from "../ui/spinner";
+
+import Link from "next/link";
 
 export const Heading = () => {
   const {isAuthenticated, isLoading} = useConvexAuth();
@@ -22,9 +26,18 @@ export const Heading = () => {
         </div>
       )}
       {isAuthenticated && !isLoading && (
-        <Button>
-          Teste o WebPad <ArrowRight className="h-4 w-4 ml-2" />
+        <Button asChild>
+          <Link href="/inicio">
+            Entrar no WebPad <ArrowRight className="h-4 w-4 ml-2" />
+          </Link>
         </Button>
+      )}
+      {!isAuthenticated && !isLoading && (
+        <SignInButton mode="modal">
+          <Button>
+            Teste o WebPad <ArrowRight className="h-4 w-4 ml-2" />
+          </Button>
+        </SignInButton>
       )}
     </div>
   );

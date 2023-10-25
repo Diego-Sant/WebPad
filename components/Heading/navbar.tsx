@@ -41,7 +41,7 @@ const Navbar = () => {
         {isAuthenticated && !isLoading && (
           <>
             <Button variant="ghost" size="sm" asChild>
-              <Link href="/documentos">
+              <Link href="/inicio">
                 {firstName}
               </Link>
             </Button>
