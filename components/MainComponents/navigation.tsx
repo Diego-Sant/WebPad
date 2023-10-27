@@ -2,24 +2,28 @@
 
 import { cn } from "@/lib/utils"
 
-import { ChevronsLeft, MenuIcon } from "lucide-react"
+import { ChevronsLeft, MenuIcon, PlusCircle, Search, Settings } from "lucide-react"
 
 import { usePathname } from "next/navigation"
 
 import { ElementRef, useEffect, useRef, useState } from "react"
 
-import { useQuery } from "convex/react"
+import { useMutation, useQuery } from "convex/react"
 import { api } from "@/convex/_generated/api"
 
 import { useMediaQuery } from "usehooks-ts"
 
+import { toast } from "sonner"
+
 import UserItem from "./user-item"
+import Item from "./item"
 
 export const Navigation = () => {
     const pathName = usePathname();
 
     const isMobile = useMediaQuery("(max-width: 768px)");
     const documents = useQuery(api.documents.get);
+    const create = useMutation(api.documents.create);
     
     const isResizingRef = useRef(false);
     const sidebarRef = useRef<ElementRef<"aside">>(null);
@@ -58,7 +62,7 @@ export const Navigation = () => {
 
         let newWidth = event.clientX;
         
-        if (newWidth < 240) newWidth = 240;
+        if (newWidth < 220) newWidth = 220;
         if (newWidth > 480) newWidth = 480;
 
         if (sidebarRef.current && navbarRef.current) {
@@ -106,6 +110,16 @@ export const Navigation = () => {
         }
     }
 
+    const handleCreate = () => {
+        const promise = create({ title: "Sem título"});
+
+        toast.promise(promise, {
+            loading: "Criando um bloco de notas...",
+            success: "Bloco de notas criado com sucesso!",
+            error: "Falha ao criar o bloco de notas!"
+        })
+    }
+
     
     return (
         <>
@@ -125,7 +139,25 @@ export const Navigation = () => {
                 </div>
 
                 <div>
+
                     <UserItem />
+
+                    <Item label="Pesquisar"
+                        icon={Search}
+                        isSearch
+                        onClick={() => {}}
+                    />
+
+                    <Item label="Configurações"
+                        icon={Settings}
+                        onClick={() => {}}
+                    />
+
+                    <Item onClick={handleCreate}
+                        label="Criar bloco de notas"
+                        icon={PlusCircle}
+                    />
+
                 </div>
                 <div className="mt-4">
                     {documents?.map((documents) => (
