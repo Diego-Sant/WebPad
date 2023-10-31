@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils"
 
 import { ChevronsLeft, MenuIcon, PlusCircle, PlusIcon, Search, Settings, Trash } from "lucide-react"
 
-import { usePathname, useRouter } from "next/navigation"
+import { usePathname } from "next/navigation"
 
 import { ElementRef, useEffect, useRef, useState } from "react"
 
@@ -15,6 +15,8 @@ import { useMediaQuery } from "usehooks-ts"
 
 import { toast } from "sonner"
 
+import { useSearch } from "@/hooks/useSearch"
+
 import UserItem from "./user-item" 
 import { Item } from "./item" 
 import { DocumentList } from "./document-list"
@@ -24,7 +26,7 @@ import { TrashBox } from "./trash-box"
 
 export const Navigation = () => {
     const pathName = usePathname();
-    const router = useRouter();
+    const search = useSearch();
 
     const isMobile = useMediaQuery("(max-width: 768px)");
     const create = useMutation(api.documents.create);
@@ -149,7 +151,7 @@ export const Navigation = () => {
                     <Item label="Pesquisar"
                         icon={Search}
                         isSearch
-                        onClick={() => {}}
+                        onClick={search.onOpen}
                     />
 
                     <Item label="Configurações"

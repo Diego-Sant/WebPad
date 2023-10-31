@@ -1,6 +1,7 @@
 "use client"
 
 import { Navigation } from "@/components/MainComponents/navigation";
+import { SearchCommand } from "@/components/MainComponents/search-command";
 import { Spinner } from "@/components/ui/spinner";
 
 import { useConvexAuth } from "convex/react";
@@ -26,6 +27,7 @@ const MainLayout = ({children} : {children: React.ReactNode}) => {
         <div className="h-full flex">
             <Navigation />
             <main className="flex-1 h-full overflow-y-auto">
+                <SearchCommand />
                 {children}
             </main>
         </div>
