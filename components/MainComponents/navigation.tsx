@@ -1,32 +1,34 @@
 "use client"
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
-import { ChevronsLeft, MenuIcon, PlusCircle, PlusIcon, Search, Settings, Trash } from "lucide-react"
+import { ChevronsLeft, MenuIcon, PlusCircle, PlusIcon, Search, Settings, Trash } from "lucide-react";
 
-import { usePathname } from "next/navigation"
+import { usePathname } from "next/navigation";
 
-import { ElementRef, useEffect, useRef, useState } from "react"
+import { ElementRef, useEffect, useRef, useState } from "react";
 
-import { useMutation } from "convex/react"
-import { api } from "@/convex/_generated/api"
+import { useMutation } from "convex/react";
+import { api } from "@/convex/_generated/api";
 
-import { useMediaQuery } from "usehooks-ts"
+import { useMediaQuery } from "usehooks-ts";
 
-import { toast } from "sonner"
+import { toast } from "sonner";
 
-import { useSearch } from "@/hooks/useSearch"
+import { useSearch } from "@/hooks/useSearch";
+import { useSettings } from "@/hooks/useSettings";
 
-import UserItem from "./user-item" 
-import { Item } from "./item" 
-import { DocumentList } from "./document-list"
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
-import { TrashBox } from "./trash-box"
+import UserItem from "./user-item";
+import { Item } from "./item";
+import { DocumentList } from "./document-list";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { TrashBox } from "./trash-box";
 
 
 export const Navigation = () => {
     const pathName = usePathname();
     const search = useSearch();
+    const settings = useSettings();
 
     const isMobile = useMediaQuery("(max-width: 768px)");
     const create = useMutation(api.documents.create);
@@ -156,7 +158,7 @@ export const Navigation = () => {
 
                     <Item label="Configurações"
                         icon={Settings}
-                        onClick={() => {}}
+                        onClick={settings.onOpen}
                     />
 
                     <Item onClick={handleCreate}
