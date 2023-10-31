@@ -2,9 +2,9 @@
 
 import { cn } from "@/lib/utils"
 
-import { ChevronsLeft, MenuIcon, PlusCircle, Search, Settings } from "lucide-react"
+import { ChevronsLeft, MenuIcon, PlusCircle, PlusIcon, Search, Settings, Trash } from "lucide-react"
 
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 
 import { ElementRef, useEffect, useRef, useState } from "react"
 
@@ -15,12 +15,16 @@ import { useMediaQuery } from "usehooks-ts"
 
 import { toast } from "sonner"
 
-import UserItem from "./user-item"
-import { Item } from "./item"
+import UserItem from "./user-item" 
+import { Item } from "./item" 
 import { DocumentList } from "./document-list"
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
+import { TrashBox } from "./trash-box"
+
 
 export const Navigation = () => {
     const pathName = usePathname();
+    const router = useRouter();
 
     const isMobile = useMediaQuery("(max-width: 768px)");
     const create = useMutation(api.documents.create);
@@ -162,6 +166,22 @@ export const Navigation = () => {
 
                 <div className="mt-4">
                     <DocumentList />
+
+                    <div className="mt-4">
+                        <Item onClick={handleCreate} icon={PlusIcon} label="Criar bloco de notas"/>
+                    </div>
+
+                    <Popover>
+
+                        <PopoverTrigger className="w-full mt-4">
+                            <Item label="Lixeira" icon={Trash} />
+                        </PopoverTrigger>
+
+                        <PopoverContent className="p-0 w-72" side={isMobile ? "bottom" : "right"}>
+                            <TrashBox />
+                        </PopoverContent>
+
+                    </Popover>
                 </div>
 
                 <div onMouseDown={handleMouseDown} onClick={resetWidth} 
