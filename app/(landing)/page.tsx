@@ -1,6 +1,6 @@
-import Footer from '@/components/heading/footer'
-import { Heading } from '@/components/heading/heading'
-import { Heroes } from '@/components/heading/heroes'
+import Footer from '@/components/Heading/footer'
+import { Heading } from '@/components/Heading/heading'
+import { Heroes } from '@/components/Heading/heroes'
 
 const LandingPage = () => {
   return (
