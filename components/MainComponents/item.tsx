@@ -13,9 +13,9 @@ import { ChevronDown, ChevronRight, LucideIcon, MoreHorizontal, PlusIcon, Trash 
 import { Skeleton } from "../ui/skeleton";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 
-import { useRouter } from "next/navigation";
-
 import { toast } from "sonner";
+
+import { useMediaQuery } from "usehooks-ts";
 
 
 interface ItemProps {
@@ -34,7 +34,7 @@ interface ItemProps {
 export const Item = ({ id, documentIcon, active, expanded, isSearch, level = 0, onExpand, label, onClick, icon: Icon} : ItemProps) => {
     const ChevronIcon = expanded ? ChevronDown : ChevronRight;
     const create = useMutation(api.documents.create);
-    const router = useRouter();
+    const isMobile = useMediaQuery("(max-width: 768px)");
 
     const archive = useMutation(api.documents.archive);
 
@@ -105,7 +105,7 @@ export const Item = ({ id, documentIcon, active, expanded, isSearch, level = 0, 
         {label}
       </span>
 
-      {isSearch && (
+      {isSearch && !isMobile && (
         <kbd className="ml-auto pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
             <span className="text-xs">CTRL</span>+ K
         </kbd>

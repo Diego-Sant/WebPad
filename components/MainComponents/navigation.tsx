@@ -79,7 +79,7 @@ export const Navigation = () => {
             sidebarRef.current.style.width = `${newWidth}px`;
 
             navbarRef.current.style.setProperty("left", `${newWidth}px`);
-            navbarRef.current.style.setProperty("width", `calc(100%-${newWidth}px)`);
+            navbarRef.current.style.setProperty("width", `calc(100% - ${newWidth}px)`);
         }
     }
 
@@ -98,7 +98,7 @@ export const Navigation = () => {
 
             sidebarRef.current.style.width = isMobile ? "100%" : "240px";
 
-            navbarRef.current.style.setProperty("width", isMobile ? "0" : "calc(100%-240px)");
+            navbarRef.current.style.setProperty("width", isMobile ? "0" : "calc(100% - 240px)");
             navbarRef.current.style.setProperty("left", isMobile ? "100%" : "240px");
 
             setTimeout(() => setIsResetting(false), 300)
