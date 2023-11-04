@@ -7,11 +7,14 @@ import { api } from "@/convex/_generated/api";
 import IconPicker from "./icon-picker";
 import { Button } from "../ui/button";
 
+import { useCoverImage } from "@/hooks/useCoverImage";
+
 import { ImageIcon, SmileIcon, X } from "lucide-react";
 
 import { ElementRef, useRef, useState } from "react";
 
 import TextareaAutosize from "react-textarea-autosize";
+import { cn } from "@/lib/utils";
 
 interface ToolbarProps {
     initialData: Doc<"documents">;
@@ -22,10 +25,13 @@ export const Toolbar = ({ initialData, preview }: ToolbarProps) => {
     const inputRef = useRef<ElementRef<"textarea">>(null);
 
     const [isEditing, setIsEditing] = useState(false);
+    const [iconSelected, setIconSelected] = useState(false);
     const [value, setValue] = useState(initialData.title);
 
     const update = useMutation(api.documents.update);
     const removeIcon = useMutation(api.documents.removeIcon);
+
+    const coverImage = useCoverImage();
 
     const enableInput = () => {
         if (preview) return;
@@ -62,48 +68,37 @@ export const Toolbar = ({ initialData, preview }: ToolbarProps) => {
         update({
             id: initialData._id,
             icon
-        })
+        });
+
+        setIconSelected(true);
     }
 
     const onRemoveIcon = () => {
         removeIcon({
             id: initialData._id
-        })
+        });
+
+        setIconSelected(false);
     }
     
     return (
-        <div className="pl-[54px] group relative">
-
-            {isEditing && !preview ? (
-                <TextareaAutosize 
-                    ref={inputRef} 
-                    onBlur={disableInput} 
-                    onKeyDown={onKeyDown} 
-                    value={value} 
-                    onChange={(e) => onInput(e.target.value)} 
-                    className="text-5xl bg-transparent font-bold break-words outline-none text-[#3f3f3f] dark:text-[#cfcfcf] resize-none" 
-                />
-            ) : (
-                <div onClick={enableInput} className="pb-[11.5px] text-5xl font-bold break-words outline-none text-[#3f3f3f] dark:text-[#cfcfcf]">
-                    {initialData.title}
-                </div>
-            )}
+        <div className={`pl-[54px] group relative pt-4 ${iconSelected ? 'flex items-center' : 'block'}`}>
 
             {!!initialData.icon && !preview && (
-                <div className="flex items-center gap-x-2 group/icon pt-6">
+                <div className="flex items-center gap-x-2 group/icon mr-3">
+                    <Button onClick={onRemoveIcon} variant="outline" size="icon" className="rounded-full opacity-0 group-hover/icon:opacity-100 transition text-muted-foreground text-xs">
+                        <X className="h-4 w-4" />
+                    </Button>
                     <IconPicker onChange={onIconSelect}>
                         <p className="text-6xl hover:opacity-75 transition">
                             {initialData.icon}
                         </p>
                     </IconPicker>
-                    <Button onClick={onRemoveIcon} variant="outline" size="icon" className="rounded-full opacity-0 group-hover/icon:opacity-100 transition text-muted-foreground text-xs">
-                        <X className="h-4 w-4" />
-                    </Button>
                 </div>
             )}
 
             {!!initialData.icon && preview && (
-                <p className="text-6xl pt-6">
+                <p className="text-6xl">
                     {initialData.icon}
                 </p>
             )}
@@ -118,14 +113,29 @@ export const Toolbar = ({ initialData, preview }: ToolbarProps) => {
                    </IconPicker> 
                 )}
 
-                {!initialData.coverImage && !preview && (
-                    <Button variant="outline" size="sm" onClick={() => {}} className="text-muted-foreground text-xs">
-                        <ImageIcon className="h-4 w-4 mr-2" />
-                        Adicionar imagem
-                    </Button>
-                )}
-
             </div>
+
+            {isEditing && !preview ? (
+                <TextareaAutosize
+                    ref={inputRef}
+                    onBlur={disableInput}
+                    onKeyDown={onKeyDown}
+                    value={value}
+                    onChange={(e) => onInput(e.target.value)}
+                    className="text-5xl bg-transparent font-bold break-words outline-none text-[#3f3f3f] dark:text-[#cfcfcf] resize-none"
+                />
+            ) : (
+                <div onClick={enableInput} className="text-5xl font-bold break-words outline-none text-[#3f3f3f] dark:text-[#cfcfcf]">
+                    {initialData.title}
+                </div>
+            )}
+
+            {!initialData.coverImage && !preview && (
+                <Button variant="outline" size="sm" onClick={coverImage.onOpen} className={`text-muted-foreground text-xs opacity-0 group-hover:opacity-100 ${iconSelected ? 'mt-1 ml-3' : 'mt-4'}`}>
+                    <ImageIcon className="h-4 w-4 mr-2 " />
+                    Adicionar imagem
+                </Button>
+            )}
 
         </div>
     );

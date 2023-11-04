@@ -1,6 +1,8 @@
 "use client";
 
+import { Cover } from "@/components/MainComponents/cover";
 import { Toolbar } from "@/components/MainComponents/toolbar";
+import { Spinner } from "@/components/ui/spinner";
 
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
@@ -18,7 +20,11 @@ const DocumentIdPage = ({ params }: DocumentIdPageProps) => {
   });
 
   if (document === undefined) {
-    return <p>Loading...</p>
+    return (
+      <div className='flex items-center justify-center absolute inset-y-0 h-full w-full bg-background/80 z-50'>
+        <Spinner size="lg" />
+      </div>
+    )
   }
 
   if (document === null) {
@@ -26,7 +32,8 @@ const DocumentIdPage = ({ params }: DocumentIdPageProps) => {
   }
 
   return (
-    <div className="pt-40">
+    <div className="pb-40">
+      <Cover url={document.coverImage} />
       <div className="md:max-w-3xl lg:max-w-4xl mx-auto">
         <Toolbar initialData={document} />
       </div>
