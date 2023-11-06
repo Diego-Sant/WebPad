@@ -7,6 +7,7 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 
 import { Button } from "../ui/button";
+import { Skeleton } from "../ui/skeleton";
 
 import { ImageIcon, X } from "lucide-react";
 
@@ -69,4 +70,10 @@ export const Cover = ({ url, preview }: CoverProps) => {
         </div>
 
     );
+}
+
+Cover.Skeleton = function CoverSkeleton() {
+    return (
+        <Skeleton className="w-full h-[12vh]" />
+    )
 }

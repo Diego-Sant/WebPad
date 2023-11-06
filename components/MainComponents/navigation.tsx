@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 
 import { ChevronsLeft, MenuIcon, PlusCircle, PlusIcon, Search, Settings, Trash } from "lucide-react";
 
-import { useParams, usePathname } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 
 import { ElementRef, useEffect, useRef, useState } from "react";
 
@@ -31,6 +31,7 @@ export const Navigation = () => {
     const params = useParams();
     const search = useSearch();
     const settings = useSettings();
+    const router = useRouter();
 
     const isMobile = useMediaQuery("(max-width: 768px)");
     const create = useMutation(api.documents.create);
@@ -121,20 +122,20 @@ export const Navigation = () => {
     }
 
     const handleCreate = () => {
-        const promise = create({ title: "Sem título"});
+        const promise = create({ title: "Sem título"}).then((documentId) => router.push(`/inicio/${documentId}`));
 
         toast.promise(promise, {
             loading: "Criando um bloco de notas...",
             success: "Bloco de notas criado com sucesso!",
             error: "Falha ao criar o bloco de notas!"
-        })
+        });
     }
 
     
     return (
         <>
             <aside ref={sidebarRef} 
-                className={cn("group/sidebar h-full bg-secondary overflow-y-auto relative flex w-60 flex-col z-[99999]", 
+                className={cn("group/sidebar h-full bg-secondary overflow-y-auto relative flex w-60 flex-col z-[999]",
                     isResetting && "transition-all ease-in-out duration-300",
                     isMobile && "w-0"
             )}>
@@ -196,7 +197,7 @@ export const Navigation = () => {
             </aside>
 
             <div ref={navbarRef} 
-                className={cn("absolute top-0 z-[99999] left-60 w-[calc(100%-240px)]",
+                className={cn("absolute top-0 z-[999] left-60 w-[calc(100%-240px)]",
                     isResetting && "transition-all ease-in-out duration-300",
                     isMobile && "left-0 w-full"    
             )}>

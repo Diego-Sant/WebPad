@@ -12,13 +12,15 @@ import { PlusCircle } from "lucide-react";
 import { toast } from "sonner";
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const MainDocumentsPage = () => {
   const { user } = useUser();
   const create  = useMutation(api.documents.create);
+  const router = useRouter();
 
   const onCreate = () => {
-    const promise = create({ title: "Sem título"});
+    const promise = create({ title: "Sem título"}).then((documentId) => router.push(`/inicio/${documentId}`));
 
     toast.promise(promise, {
       loading: "Criando um bloco de notas...",

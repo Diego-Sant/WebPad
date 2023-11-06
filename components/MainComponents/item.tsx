@@ -16,6 +16,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 import { toast } from "sonner";
 
 import { useMediaQuery } from "usehooks-ts";
+import { useRouter } from "next/navigation";
 
 
 interface ItemProps {
@@ -35,6 +36,7 @@ export const Item = ({ id, documentIcon, active, expanded, isSearch, level = 0, 
     const ChevronIcon = expanded ? ChevronDown : ChevronRight;
     const create = useMutation(api.documents.create);
     const isMobile = useMediaQuery("(max-width: 768px)");
+    const router = useRouter();
 
     const archive = useMutation(api.documents.archive);
 
@@ -45,7 +47,7 @@ export const Item = ({ id, documentIcon, active, expanded, isSearch, level = 0, 
 
       if (!id) return;
 
-      const promise = archive({ id });
+      const promise = archive({ id }).then(() => router.push("/inicio"));
 
       toast.promise(promise, {
           loading: "Movendo para a lixeira...",
@@ -70,7 +72,7 @@ export const Item = ({ id, documentIcon, active, expanded, isSearch, level = 0, 
           if(!expanded) {
             onExpand?.();
           }
-          //router.push(`/inicio/${documentId}`);
+          router.push(`/inicio/${documentId}`);
         });
 
         toast.promise(promise, {
