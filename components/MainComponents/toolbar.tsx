@@ -9,7 +9,7 @@ import { Button } from "../ui/button";
 
 import { useCoverImage } from "@/hooks/useCoverImage";
 
-import { ImageIcon, SmileIcon, X } from "lucide-react";
+import { ImageIcon, PenLine, SmileIcon, X } from "lucide-react";
 
 import { ElementRef, useRef, useState } from "react";
 
@@ -125,8 +125,16 @@ export const Toolbar = ({ initialData, preview }: ToolbarProps) => {
                     className="text-5xl bg-transparent font-bold break-words outline-none text-[#3f3f3f] dark:text-[#cfcfcf] resize-none"
                 />
             ) : (
-                <div onClick={enableInput} className="text-5xl font-bold break-words outline-none text-[#3f3f3f] dark:text-[#cfcfcf]">
+                <div onClick={enableInput} className="text-5xl flex items-center gap-x-2 font-bold break-words outline-none text-[#3f3f3f] dark:text-[#cfcfcf]">
                     {initialData.title}
+
+                    {initialData.title === "Sem título" && !initialData.isPublished ? (
+                        <PenLine className="w-9 h-9 mt-1" />
+                    ) : (
+                        <>
+
+                        </>
+                    )}
                 </div>
             )}
 

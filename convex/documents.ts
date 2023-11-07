@@ -221,16 +221,16 @@ export const getById = query({ args: { documentId: v.id("documents") },
 
         const document = await ctx.db.get(args.documentId);
 
-        if (!identity) {
-            throw new Error("Não autenticado!");
-        }
-
         if (!document) {
             throw new Error("Bloco de notas não encontrado!")
         }
-
+        
         if (document.isPublished && !document.isArchived) {
             return document;
+        }
+
+        if (!identity) {
+            throw new Error("Não autenticado!");
         }
 
         const userId = identity.subject;
